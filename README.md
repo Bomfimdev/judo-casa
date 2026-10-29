@@ -6,18 +6,20 @@ App **web + iOS/Android** do projeto social de judô no **Instituto Casa Oficial
 
 ## Status
 
-Épico + stack + **UI/UX** travados (2026-10-29). Scaffold Expo com home no estilo do protótipo.
+Épico + stack + UI travados · **web em produção**.
 
-**Stack:** Expo + Supabase · **UI:** [`docs/design/judo-casa-ui-prototype.html`](docs/design/judo-casa-ui-prototype.html)
+- **App:** https://judo-casa.vercel.app  
+- **Contas teste:** [docs/seed-contas.md](docs/seed-contas.md)  
+- **Stack:** Expo + Supabase · **UI:** [`docs/design/judo-casa-ui-prototype.html`](docs/design/judo-casa-ui-prototype.html)
 
-## Rodar (~1 min)
+## Rodar local (~1 min)
 
 ```bash
 cd D:\projetos\judo-casa
 npm start
 ```
 
-Depois: `w` (web) ou Expo Go no celular.
+Depois: `w` (web) ou Expo Go.
 
 ## Docs
 
