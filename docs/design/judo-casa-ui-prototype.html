@@ -1,0 +1,1442 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Judo Casa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=DM+Mono:wght@400;500&display=swap">
+
+<style>
+/* ─── Mobile-first app shell: phone frame + screen switcher ─── */
+
+:root {
+  /* Brand palette: CAP vermelho + neutros escuros + base clara */
+  --red:        #FF0D19;
+  --red-dim:    #CC0A14;
+  --red-ghost:  rgba(255,13,25,0.10);
+  --bg:         #F7F7F5;
+  --bg-card:    #FFFFFF;
+  --bg-section: #EFEFED;
+  --fg:         #1A1A1B;
+  --fg-2:       #56595B;
+  --fg-3:       #9A9B9C;
+  --border:     rgba(0,0,0,0.09);
+  --shadow:     0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.13);
+  --success:    #1A9E5B;
+  --warn:       #E08000;
+  --info:       #1474C4;
+
+  /* Type scale */
+  --f-display: 'Bebas Neue', Impact, sans-serif;
+  --f-body:    'DM Sans', system-ui, sans-serif;
+  --f-mono:    'DM Mono', monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:         #141415;
+    --bg-card:    #1E1E20;
+    --bg-section: #252528;
+    --fg:         #F0F0EE;
+    --fg-2:       #A0A2A4;
+    --fg-3:       #5A5C5E;
+    --border:     rgba(255,255,255,0.08);
+    --shadow:     0 2px 12px rgba(0,0,0,0.35);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:         #141415;
+  --bg-card:    #1E1E20;
+  --bg-section: #252528;
+  --fg:         #F0F0EE;
+  --fg-2:       #A0A2A4;
+  --fg-3:       #5A5C5E;
+  --border:     rgba(255,255,255,0.08);
+  --shadow:     0 2px 12px rgba(0,0,0,0.35);
+  --shadow-lg:  0 8px 32px rgba(0,0,0,0.5);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  font-family: var(--f-body);
+  background: var(--bg);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Wrapper: demo layout ── */
+.demo-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-section);
+  padding-block: 24px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  gap: 24px;
+}
+
+/* ── Screen nav tabs ── */
+.screen-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 520px;
+  width: 100%;
+}
+.screen-nav button {
+  font-family: var(--f-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 13px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-card);
+  color: var(--fg-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.screen-nav button.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+.screen-nav button:hover:not(.active) {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ── Phone shell ── */
+.phone {
+  width: 375px;
+  max-width: 100%;
+  background: var(--bg);
+  border-radius: 40px;
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--border);
+  overflow: hidden;
+  position: relative;
+  min-height: 720px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Status bar */
+.status-bar {
+  background: var(--bg-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 28px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--f-body);
+  color: var(--fg);
+  flex-shrink: 0;
+}
+.status-icons { display: flex; gap: 5px; align-items: center; }
+.status-icons svg { width: 16px; height: 16px; }
+
+/* App header */
+.app-header {
+  background: var(--bg-card);
+  padding: 8px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.app-header-title {
+  font-family: var(--f-display);
+  font-size: 26px;
+  letter-spacing: 0.04em;
+  color: var(--fg);
+  line-height: 1;
+}
+.app-header-title span { color: var(--red); }
+.header-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--red-ghost);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--red);
+  flex-shrink: 0;
+}
+.header-back {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 14px; font-weight: 500; color: var(--red);
+  cursor: pointer; background: none; border: none;
+  font-family: var(--f-body);
+}
+.header-back svg { width: 18px; height: 18px; }
+.header-action {
+  background: none; border: none; cursor: pointer; padding: 4px;
+  color: var(--fg-2);
+}
+.header-action svg { width: 22px; height: 22px; display: block; }
+
+/* Scroll region */
+.screen-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.screen-body::-webkit-scrollbar { display: none; }
+
+/* Bottom nav */
+.bottom-nav {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  display: flex;
+  padding: 10px 0 16px;
+  flex-shrink: 0;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--f-body);
+}
+.nav-item svg { width: 22px; height: 22px; }
+.nav-item span {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--fg-3);
+}
+.nav-item.active svg { color: var(--red); }
+.nav-item.active span { color: var(--red); }
+.nav-item:not(.active) svg { color: var(--fg-3); }
+
+/* ── Shared components ── */
+.section-pad {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  padding: 20px 20px 10px;
+}
+.card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.chip-red   { background: var(--red-ghost); color: var(--red); }
+.chip-green { background: rgba(26,158,91,0.10); color: var(--success); }
+.chip-orange{ background: rgba(224,128,0,0.12); color: var(--warn); }
+.chip-blue  { background: rgba(20,116,196,0.10); color: var(--info); }
+
+.belt-stripe {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--belt-color, #ccc);
+}
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 20px;
+}
+
+/* ── SCREEN: Home / Dashboard ── */
+.home-greeting {
+  padding: 22px 20px 8px;
+}
+.home-greeting-sub {
+  font-size: 13px; color: var(--fg-3); font-weight: 400;
+}
+.home-greeting-name {
+  font-family: var(--f-display);
+  font-size: 34px;
+  letter-spacing: 0.03em;
+  color: var(--fg);
+  line-height: 1.1;
+  margin-top: 2px;
+  text-wrap: balance;
+}
+.home-greeting-name span { color: var(--red); }
+
+/* Belt progress card */
+.belt-card {
+  margin: 12px 20px;
+  padding: 18px 18px 16px;
+}
+.belt-card-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.belt-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--fg-3); margin-bottom: 4px;
+}
+.belt-name {
+  font-family: var(--f-display);
+  font-size: 24px; letter-spacing: 0.04em; color: var(--fg);
+}
+.belt-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--bg-section);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+.belt-progress-row {
+  display: flex; align-items: center; gap: 10px; margin-top: 14px;
+}
+.belt-bar-bg {
+  flex: 1; height: 8px;
+  background: var(--bg-section);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.belt-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--belt-color, var(--red)), color-mix(in srgb, var(--belt-color, var(--red)) 70%, #fff));
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+.belt-bar-pct {
+  font-family: var(--f-mono);
+  font-size: 13px; font-weight: 500; color: var(--fg-2);
+  min-width: 36px; text-align: right;
+}
+.belt-req {
+  font-size: 12px; color: var(--fg-3); margin-top: 6px;
+}
+
+/* Próxima aula card */
+.next-class-card {
+  margin: 0 20px 8px;
+  padding: 16px 18px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.next-class-day-block {
+  background: var(--red);
+  border-radius: 12px;
+  min-width: 52px;
+  padding: 8px 6px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.day-num {
+  font-family: var(--f-display);
+  font-size: 28px; line-height: 1; color: #fff;
+}
+.day-name {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  margin-top: 2px;
+}
+.next-class-info { flex: 1; min-width: 0; }
+.next-class-title {
+  font-weight: 600; font-size: 15px; color: var(--fg);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.next-class-time { font-size: 13px; color: var(--fg-2); margin-top: 3px; }
+.next-class-sensei { font-size: 12px; color: var(--fg-3); margin-top: 2px; }
+.checkin-btn {
+  margin-top: 10px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--red); color: #fff;
+  border: none; border-radius: 10px;
+  padding: 8px 14px; font-size: 13px; font-weight: 600;
+  font-family: var(--f-body); cursor: pointer;
+  transition: background 0.15s;
+}
+.checkin-btn:hover { background: var(--red-dim); }
+.checkin-btn svg { width: 14px; height: 14px; }
+
+/* Comunicado card */
+.comunicado-card {
+  margin: 0 20px 8px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--red);
+  border-radius: 0 12px 12px 0;
+}
+.comunicado-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--red);
+  margin-bottom: 4px;
+}
+.comunicado-text {
+  font-size: 14px; line-height: 1.5; color: var(--fg);
+}
+.comunicado-time {
+  font-size: 11px; color: var(--fg-3); margin-top: 5px;
+}
+
+/* Stats row */
+.stats-row {
+  display: flex; gap: 10px;
+  padding: 0 20px 8px;
+}
+.stat-tile {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.stat-num {
+  font-family: var(--f-display);
+  font-size: 30px; line-height: 1; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.stat-label {
+  font-size: 11px; color: var(--fg-3); font-weight: 500;
+  margin-top: 3px; letter-spacing: 0.03em;
+}
+.stat-tile .chip { margin-top: 6px; }
+
+/* ── SCREEN: Presença / Aula ── */
+.aula-header-card {
+  background: var(--red);
+  margin: 12px 20px;
+  border-radius: 18px;
+  padding: 20px 18px 18px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.aula-header-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='100' cy='20' r='60' fill='rgba(255,255,255,0.06)'/%3E%3Ccircle cx='10' cy='110' r='50' fill='rgba(255,255,255,0.04)'/%3E%3C/svg%3E") no-repeat right -10px top -10px;
+}
+.aula-card-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.7; margin-bottom: 4px;
+  position: relative;
+}
+.aula-card-title {
+  font-family: var(--f-display);
+  font-size: 26px; letter-spacing: 0.04em; line-height: 1.1;
+  position: relative;
+}
+.aula-card-meta {
+  display: flex; gap: 12px; margin-top: 10px; position: relative;
+}
+.aula-meta-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; opacity: 0.85;
+}
+.aula-meta-item svg { width: 13px; height: 13px; }
+.aula-open-badge {
+  position: absolute; top: 18px; right: 18px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+  backdrop-filter: blur(4px);
+  color: #fff;
+}
+
+/* Presença list */
+.presenca-list { padding: 0 20px; display: flex; flex-direction: column; gap: 8px; }
+.presenca-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.presenca-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--bg-section);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 600; color: var(--fg-2);
+  flex-shrink: 0;
+}
+.presenca-name { font-size: 15px; font-weight: 500; color: var(--fg); }
+.presenca-belt { font-size: 12px; color: var(--fg-3); }
+.presenca-status { margin-left: auto; display: flex; gap: 6px; flex-shrink: 0; }
+.check-btn {
+  width: 34px; height: 34px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  border: none; cursor: pointer; transition: all 0.15s;
+}
+.check-btn.confirm { background: rgba(26,158,91,0.12); color: var(--success); }
+.check-btn.confirm.active { background: var(--success); color: #fff; }
+.check-btn.absent  { background: rgba(224,128,0,0.10); color: var(--warn); }
+.check-btn.absent.active { background: var(--warn); color: #fff; }
+.check-btn svg { width: 18px; height: 18px; }
+
+.presenca-summary {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 20px;
+  background: var(--bg-section);
+  border-radius: 0;
+  font-size: 13px; color: var(--fg-2);
+}
+.presenca-summary strong { color: var(--fg); }
+
+/* ── SCREEN: Progressão / Faixa ── */
+.faixa-header {
+  padding: 16px 20px 8px;
+  display: flex; align-items: center; gap: 14px;
+}
+.faixa-visual {
+  position: relative;
+}
+.faixa-belt-img {
+  width: 68px; height: 22px;
+  border-radius: 4px;
+  display: flex; overflow: hidden; flex-shrink: 0;
+}
+.faixa-belt-img div {
+  flex: 1; height: 100%;
+}
+.faixa-info { flex: 1; min-width: 0; }
+.faixa-info-name {
+  font-family: var(--f-display);
+  font-size: 22px; letter-spacing: 0.04em; color: var(--fg);
+}
+.faixa-info-sub {
+  font-size: 12px; color: var(--fg-3);
+}
+
+.tecnica-group-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.09em;
+  text-transform: uppercase; color: var(--fg-3);
+  padding: 16px 20px 8px;
+}
+.tecnica-list { padding: 0 20px; display: flex; flex-direction: column; gap: 6px; }
+.tecnica-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.tecnica-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.15s;
+}
+.tecnica-check.done {
+  background: var(--success); border-color: var(--success);
+}
+.tecnica-check.done svg { color: #fff; }
+.tecnica-check svg { width: 12px; height: 12px; color: transparent; }
+.tecnica-name { font-size: 14px; color: var(--fg); flex: 1; min-width: 0; }
+.tecnica-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 2px 7px; border-radius: 10px;
+  background: var(--bg-section); color: var(--fg-3);
+  white-space: nowrap;
+}
+.tecnica-tag.throw { background: rgba(255,13,25,0.08); color: var(--red); }
+.tecnica-tag.ground { background: rgba(20,116,196,0.10); color: var(--info); }
+
+.exame-cta {
+  margin: 16px 20px;
+  padding: 18px 18px;
+  background: linear-gradient(135deg, var(--red) 0%, #CC0A14 100%);
+  border-radius: 18px;
+  color: #fff;
+}
+.exame-cta-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.75; }
+.exame-cta-title { font-family: var(--f-display); font-size: 22px; letter-spacing: 0.04em; margin-top: 2px; }
+.exame-cta-sub { font-size: 13px; opacity: 0.85; margin-top: 4px; }
+.exame-btn {
+  margin-top: 14px;
+  background: rgba(255,255,255,0.2);
+  border: 1.5px solid rgba(255,255,255,0.4);
+  border-radius: 10px;
+  color: #fff;
+  font-family: var(--f-body);
+  font-size: 13px; font-weight: 600;
+  padding: 9px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.15s;
+}
+.exame-btn:hover { background: rgba(255,255,255,0.3); }
+
+/* ── SCREEN: Campeonato ── */
+.camp-hero {
+  background: var(--fg);
+  margin: 12px 20px;
+  border-radius: 18px;
+  overflow: hidden;
+}
+.camp-hero-inner {
+  padding: 20px 18px;
+  position: relative;
+}
+.camp-hero-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,0.5);
+}
+.camp-hero-title {
+  font-family: var(--f-display);
+  font-size: 28px; letter-spacing: 0.04em;
+  color: #fff; line-height: 1.1;
+  margin-top: 2px; text-wrap: balance;
+}
+.camp-hero-date {
+  font-size: 13px; color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+}
+.camp-hero-badge {
+  position: absolute; top: 18px; right: 18px;
+  background: var(--red);
+  border-radius: 20px; padding: 5px 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; color: #fff;
+}
+.camp-hero-btn {
+  display: block;
+  width: 100%;
+  background: var(--red);
+  color: #fff;
+  border: none;
+  padding: 16px;
+  font-family: var(--f-display);
+  font-size: 18px; letter-spacing: 0.06em;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.15s;
+}
+.camp-hero-btn:hover { background: var(--red-dim); }
+.camp-hero-btn.enrolled {
+  background: var(--success);
+}
+
+.camp-detail-list {
+  display: flex; flex-direction: column; gap: 0;
+  padding: 0 20px;
+}
+.camp-detail-row {
+  display: flex; align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  gap: 10px;
+}
+.camp-detail-row:last-child { border-bottom: none; }
+.camp-detail-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: var(--bg-section);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--fg-2);
+}
+.camp-detail-icon svg { width: 16px; height: 16px; }
+.camp-detail-key { font-size: 12px; color: var(--fg-3); }
+.camp-detail-val { font-size: 14px; font-weight: 500; color: var(--fg); margin-top: 1px; }
+.camp-detail-info { min-width: 0; }
+
+.camp-inscritos {
+  margin: 8px 20px;
+  padding: 14px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.camp-inscritos-row {
+  display: flex; justify-content: space-between; align-items: center;
+}
+.camp-inscritos-label { font-size: 13px; color: var(--fg-2); }
+.camp-inscritos-count { font-family: var(--f-display); font-size: 28px; color: var(--fg); }
+.inscritos-avatars {
+  display: flex; margin-top: 10px;
+}
+.ins-av {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--bg-section);
+  border: 2px solid var(--bg-card);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 600; color: var(--fg-2);
+  margin-left: -8px;
+}
+.ins-av:first-child { margin-left: 0; }
+.ins-av.more {
+  background: var(--red-ghost); color: var(--red);
+}
+
+/* ── SCREEN: Sensei – Avaliação ── */
+.avaliacao-aluno {
+  margin: 12px 20px;
+  padding: 16px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex; gap: 12px; align-items: center;
+}
+.aval-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--bg-section);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 600; color: var(--fg-2);
+  flex-shrink: 0;
+}
+.aval-name { font-size: 16px; font-weight: 600; color: var(--fg); }
+.aval-belt-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.belt-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.aval-sub { font-size: 12px; color: var(--fg-3); }
+
+.nota-grid {
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.nota-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+}
+.nota-cat {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--fg-3); margin-bottom: 10px;
+}
+.nota-stars { display: flex; gap: 3px; }
+.nota-stars svg {
+  width: 20px; height: 20px;
+  transition: color 0.1s;
+}
+.star-filled { color: var(--red); }
+.star-empty  { color: var(--border); }
+.nota-label  { font-size: 12px; color: var(--fg-3); margin-top: 4px; }
+
+.obs-box {
+  margin: 8px 20px;
+  padding: 12px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.obs-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-3); margin-bottom: 6px; }
+.obs-text  { font-size: 14px; line-height: 1.55; color: var(--fg-2); }
+
+.salvar-btn {
+  margin: 16px 20px 8px;
+  width: calc(100% - 40px);
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: var(--f-display);
+  font-size: 19px; letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.salvar-btn:hover { background: var(--red-dim); }
+
+/* ── Demo label ── */
+.demo-note {
+  font-size: 12px; color: var(--fg-3);
+  text-align: center;
+  font-family: var(--f-body);
+  max-width: 375px;
+}
+
+/* Theme toggle */
+.theme-toggle {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--f-body); font-size: 12px; font-weight: 500;
+  color: var(--fg-2); background: var(--bg-card);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 6px 12px; cursor: pointer;
+  transition: all 0.15s;
+}
+.theme-toggle:hover { border-color: var(--fg-3); }
+.theme-toggle svg { width: 15px; height: 15px; }
+
+</style>
+
+<div class="demo-wrapper">
+
+  <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;">
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--red);">JUDO CASA</div>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">
+      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="themeLabel">Escuro</span>
+    </button>
+  </div>
+
+  <nav class="screen-nav" role="navigation" aria-label="Telas do protótipo">
+    <button class="active" onclick="showScreen('home')">Home</button>
+    <button onclick="showScreen('presenca')">Presença</button>
+    <button onclick="showScreen('progressao')">Faixa</button>
+    <button onclick="showScreen('campeonato')">Campeonato</button>
+    <button onclick="showScreen('avaliacao')">Avaliação</button>
+  </nav>
+
+  <div class="phone" role="main">
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+      <span>19:13</span>
+      <div class="status-icons">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5.2 4.8 10.3 3 12 3s6.8 1.8 10.5 5.5l-1.5 1.5C17.7 6.7 14 5 12 5S6.3 6.7 3 10l-1.5-1.5z"/><path d="M5 12c1.9-1.9 4.3-3 7-3s5.1 1.1 7 3l-1.5 1.5C16 11.7 14 11 12 11s-4 .7-5.5 2.5L5 12z"/><path d="M8.5 15.5C9.5 14.5 10.7 14 12 14s2.5.5 3.5 1.5L12 18l-3.5-2.5z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="18" height="11" rx="2"/><path d="M22 11v3a1 1 0 0 1-1 1h-1V10h1a1 1 0 0 1 1 1z"/></svg>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SCREEN: HOME
+    ══════════════════════════════════ -->
+    <div id="screen-home" class="screen-body">
+      <div class="app-header">
+        <div class="app-header-title">Judo<span>Casa</span></div>
+        <div class="header-avatar">LF</div>
+      </div>
+
+      <!-- Greeting -->
+      <div class="home-greeting">
+        <div class="home-greeting-sub">Quinta-feira, 29 de outubro</div>
+        <div class="home-greeting-name">Olá, <span>Lucas!</span></div>
+      </div>
+
+      <!-- Belt progress -->
+      <div class="card belt-card" style="--belt-color:#1d7bff;">
+        <div class="belt-card-top">
+          <div>
+            <div class="belt-label">Faixa Atual</div>
+            <div class="belt-name">Azul</div>
+          </div>
+          <div class="belt-icon">🥋</div>
+        </div>
+        <div class="belt-progress-row">
+          <div class="belt-bar-bg">
+            <div class="belt-bar-fill" style="width:68%;--belt-color:#1d7bff;"></div>
+          </div>
+          <div class="belt-bar-pct">68%</div>
+        </div>
+        <div class="belt-req">7 de 10 técnicas concluídas · Próxima: Faixa Roxa</div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-tile">
+          <div class="stat-num">24</div>
+          <div class="stat-label">Presenças</div>
+          <div class="chip chip-green">↑ 3 este mês</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Treinos</div>
+          <div class="chip chip-red">Esta semana</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-num">2</div>
+          <div class="stat-label">Campeona.</div>
+          <div class="chip chip-orange">Abertos</div>
+        </div>
+      </div>
+
+      <!-- Próxima aula -->
+      <div class="section-title">Próxima Aula</div>
+      <div class="card next-class-card">
+        <div class="next-class-day-block">
+          <div class="day-num">31</div>
+          <div class="day-name">SAB</div>
+        </div>
+        <div class="next-class-info">
+          <div class="next-class-title">Turma Avançado — Nage-waza</div>
+          <div class="next-class-time">08:00 – 10:00 · Samambaia</div>
+          <div class="next-class-sensei">Sensei Ricardo Alves</div>
+          <button class="checkin-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Fazer Check-in
+          </button>
+        </div>
+      </div>
+
+      <!-- Comunicado -->
+      <div class="section-title">Comunicados</div>
+      <div class="card comunicado-card">
+        <div class="comunicado-badge">📢 Coordenação</div>
+        <div class="comunicado-text">Exame de faixa marcado para 15/11. Lista de elegíveis disponível no app. Presença obrigatória.</div>
+        <div class="comunicado-time">Há 2 horas · Para toda a turma</div>
+      </div>
+      <div class="card comunicado-card" style="margin-top:8px;border-left-color:var(--info);">
+        <div class="comunicado-badge" style="color:var(--info);">📋 Sensei</div>
+        <div class="comunicado-text">Campeonato de Brasília confirmado para dezembro. Inscrições abertas até 10/11.</div>
+        <div class="comunicado-time">Ontem · Turma Avançado</div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SCREEN: PRESENÇA
+    ══════════════════════════════════ -->
+    <div id="screen-presenca" class="screen-body" hidden>
+      <div class="app-header">
+        <button class="header-back" onclick="showScreen('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <span style="font-weight:600;font-size:16px;">Aula em Curso</span>
+        <button class="header-action">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </button>
+      </div>
+
+      <div class="aula-header-card">
+        <div class="aula-open-badge">● Aberta</div>
+        <div class="aula-card-label">Turma Avançado</div>
+        <div class="aula-card-title">Sábado — Nage-waza</div>
+        <div class="aula-card-meta">
+          <div class="aula-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            08:00 – 10:00
+          </div>
+          <div class="aula-meta-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            12 alunos
+          </div>
+        </div>
+      </div>
+
+      <div class="presenca-summary">
+        <span><strong>8</strong> confirmados</span>
+        <span><strong>2</strong> check-in pendente</span>
+        <span><strong>2</strong> ausentes</span>
+      </div>
+
+      <div class="section-title">Lista de Alunos</div>
+      <div class="presenca-list">
+        <div class="presenca-item">
+          <div class="presenca-avatar">LF</div>
+          <div>
+            <div class="presenca-name">Lucas Ferreira</div>
+            <div class="presenca-belt">Faixa Azul</div>
+          </div>
+          <div class="presenca-status">
+            <button class="check-btn confirm active" title="Presente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="check-btn absent" title="Ausente">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="presenca-item">
+          <div class="presenca-avatar">MS</div>
+          <div>
+            <div class="presenca-name">Mariana Silva</div>
+            <div class="presenca-belt">Faixa Laranja</div>
+          </div>
+          <div class="presenca-status">
+            <button class="check-btn confirm active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="check-btn absent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="presenca-item" style="border-color:rgba(224,128,0,0.3);">
+          <div class="presenca-avatar" style="background:rgba(224,128,0,0.1);color:var(--warn);">RT</div>
+          <div>
+            <div class="presenca-name">Rafael Teixeira</div>
+            <div class="presenca-belt">Faixa Amarela · Check-in feito</div>
+          </div>
+          <div class="presenca-status">
+            <button class="check-btn confirm" onclick="confirmPresenca(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="check-btn absent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="presenca-item">
+          <div class="presenca-avatar">AC</div>
+          <div>
+            <div class="presenca-name">Ana Costa</div>
+            <div class="presenca-belt">Faixa Branca</div>
+          </div>
+          <div class="presenca-status">
+            <button class="check-btn confirm active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="check-btn absent">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="presenca-item" style="opacity:0.6;">
+          <div class="presenca-avatar">PO</div>
+          <div>
+            <div class="presenca-name">Pedro Oliveira</div>
+            <div class="presenca-belt">Faixa Verde</div>
+          </div>
+          <div class="presenca-status">
+            <button class="check-btn confirm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <button class="check-btn absent active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SCREEN: PROGRESSÃO / FAIXA
+    ══════════════════════════════════ -->
+    <div id="screen-progressao" class="screen-body" hidden>
+      <div class="app-header">
+        <button class="header-back" onclick="showScreen('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <span style="font-weight:600;font-size:16px;">Minha Progressão</span>
+        <div style="width:50px;"></div>
+      </div>
+
+      <div class="faixa-header">
+        <div class="faixa-visual">
+          <div class="faixa-belt-img">
+            <div style="background:#1d7bff;"></div>
+          </div>
+        </div>
+        <div class="faixa-info">
+          <div class="faixa-info-name">Faixa Azul</div>
+          <div class="faixa-info-sub">7 / 10 técnicas · Desde jun/2025</div>
+        </div>
+        <div class="chip chip-blue">68%</div>
+      </div>
+
+      <div class="card belt-card" style="margin:8px 20px;--belt-color:#9c27b0;">
+        <div class="belt-label">Próxima Graduação</div>
+        <div class="belt-name" style="color:var(--fg);">Faixa Roxa</div>
+        <div class="belt-progress-row">
+          <div class="belt-bar-bg">
+            <div class="belt-bar-fill" style="width:68%;--belt-color:#9c27b0;"></div>
+          </div>
+          <div class="belt-bar-pct">3 restam</div>
+        </div>
+        <div class="belt-req">Exame previsto: Novembro 2026 — decisão do Sensei</div>
+      </div>
+
+      <div class="tecnica-group-label">Nage-waza · Arremessos</div>
+      <div class="tecnica-list">
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">O-soto-gari</div>
+          <div class="tecnica-tag throw">Arremesso</div>
+        </div>
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">O-uchi-gari</div>
+          <div class="tecnica-tag throw">Arremesso</div>
+        </div>
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Seoi-nage</div>
+          <div class="tecnica-tag throw">Arremesso</div>
+        </div>
+        <div class="tecnica-item">
+          <div class="tecnica-check" style="border-color:var(--red);background:var(--red-ghost);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Harai-goshi</div>
+          <div class="tecnica-tag" style="background:rgba(224,128,0,0.12);color:var(--warn);">Em treino</div>
+        </div>
+        <div class="tecnica-item" style="opacity:0.55;">
+          <div class="tecnica-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Uchi-mata</div>
+          <div class="tecnica-tag throw">Arremesso</div>
+        </div>
+      </div>
+
+      <div class="tecnica-group-label">Ne-waza · Solo</div>
+      <div class="tecnica-list">
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Kesa-gatame</div>
+          <div class="tecnica-tag ground">Solo</div>
+        </div>
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Yoko-shiho-gatame</div>
+          <div class="tecnica-tag ground">Solo</div>
+        </div>
+        <div class="tecnica-item">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Kami-shiho-gatame</div>
+          <div class="tecnica-tag ground">Solo</div>
+        </div>
+        <div class="tecnica-item" style="opacity:0.55;">
+          <div class="tecnica-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Juji-gatame</div>
+          <div class="tecnica-tag ground">Solo</div>
+        </div>
+        <div class="tecnica-item" style="opacity:0.55;">
+          <div class="tecnica-check">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Hadaka-jime</div>
+          <div class="tecnica-tag ground">Solo</div>
+        </div>
+      </div>
+
+      <div class="exame-cta">
+        <div class="exame-cta-label">Exame de Graduação</div>
+        <div class="exame-cta-title">Quase lá, Lucas!</div>
+        <div class="exame-cta-sub">Complete 3 técnicas para ser elegível. A banca decide a promoção.</div>
+        <button class="exame-btn">Ver requisitos completos</button>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SCREEN: CAMPEONATO
+    ══════════════════════════════════ -->
+    <div id="screen-campeonato" class="screen-body" hidden>
+      <div class="app-header">
+        <button class="header-back" onclick="showScreen('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <span style="font-weight:600;font-size:16px;">Campeonatos</span>
+        <div style="width:50px;"></div>
+      </div>
+
+      <!-- Active tournament -->
+      <div class="camp-hero">
+        <div class="camp-hero-inner">
+          <div class="camp-hero-label">Inscrições Abertas</div>
+          <div class="camp-hero-title">Open Brasília de Judô 2026</div>
+          <div class="camp-hero-date">15 de dezembro · Ginásio Nilson Nelson</div>
+          <div class="camp-hero-badge">Gratuito</div>
+        </div>
+        <button class="camp-hero-btn" id="inscBtn" onclick="toggleInscricao()">INSCREVER-ME</button>
+      </div>
+
+      <div class="camp-detail-list card" style="margin:12px 20px;">
+        <div class="camp-detail-row">
+          <div class="camp-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div class="camp-detail-info">
+            <div class="camp-detail-key">Data limite de inscrição</div>
+            <div class="camp-detail-val">10 de novembro de 2026</div>
+          </div>
+        </div>
+        <div class="camp-detail-row">
+          <div class="camp-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="camp-detail-info">
+            <div class="camp-detail-key">Local</div>
+            <div class="camp-detail-val">Ginásio Nilson Nelson, Brasília/DF</div>
+          </div>
+        </div>
+        <div class="camp-detail-row">
+          <div class="camp-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="camp-detail-info">
+            <div class="camp-detail-key">Categorias</div>
+            <div class="camp-detail-val">Infantil · Juvenil · Adulto · Máster</div>
+          </div>
+        </div>
+        <div class="camp-detail-row">
+          <div class="camp-detail-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="camp-detail-info">
+            <div class="camp-detail-key">Modalidade</div>
+            <div class="camp-detail-val">Judô — Sistema de eliminatórias + repescagem</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inscritos -->
+      <div class="camp-inscritos">
+        <div class="camp-inscritos-row">
+          <div>
+            <div class="camp-inscritos-label">Alunos inscritos</div>
+            <div class="camp-inscritos-count">8</div>
+          </div>
+          <div class="chip chip-green">Vagas disponíveis</div>
+        </div>
+        <div class="inscritos-avatars">
+          <div class="ins-av">LF</div>
+          <div class="ins-av">MS</div>
+          <div class="ins-av">AC</div>
+          <div class="ins-av">PO</div>
+          <div class="ins-av">RT</div>
+          <div class="ins-av more">+3</div>
+        </div>
+      </div>
+
+      <!-- Second tournament -->
+      <div class="section-title">Outros Torneios</div>
+      <div class="card" style="margin:0 20px 8px;padding:16px 16px;display:flex;gap:12px;align-items:center;">
+        <div style="background:var(--bg-section);border-radius:12px;padding:10px;flex-shrink:0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--fg-2)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-weight:600;font-size:14px;color:var(--fg);">Interclube DF — Janeiro/2027</div>
+          <div style="font-size:12px;color:var(--fg-3);margin-top:2px;">Inscrições em breve · Samambaia</div>
+        </div>
+        <div class="chip chip-orange">Em breve</div>
+      </div>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- ══════════════════════════════════
+         SCREEN: AVALIAÇÃO (Sensei)
+    ══════════════════════════════════ -->
+    <div id="screen-avaliacao" class="screen-body" hidden>
+      <div class="app-header">
+        <button class="header-back" onclick="showScreen('home')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Voltar
+        </button>
+        <span style="font-weight:600;font-size:16px;">Avaliar Aluno</span>
+        <div style="width:50px;"></div>
+      </div>
+
+      <!-- Aluno selecionado -->
+      <div class="avaliacao-aluno">
+        <div class="aval-avatar">LF</div>
+        <div style="flex:1;min-width:0;">
+          <div class="aval-name">Lucas Ferreira</div>
+          <div class="aval-belt-row">
+            <div class="belt-dot" style="background:#1d7bff;"></div>
+            <div class="aval-sub">Faixa Azul · Turma Avançado</div>
+          </div>
+          <div class="aval-sub" style="margin-top:3px;">Aula: Sáb 29/10 · Nage-waza</div>
+        </div>
+        <div class="chip chip-blue">Aula 24</div>
+      </div>
+
+      <!-- Notas por categoria -->
+      <div class="section-title">Avaliação da Aula</div>
+      <div class="nota-grid">
+        <div class="nota-card">
+          <div class="nota-cat">Técnica</div>
+          <div class="nota-stars" id="stars-tecnica">
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div class="nota-label">4 / 5</div>
+        </div>
+        <div class="nota-card">
+          <div class="nota-cat">Postura</div>
+          <div class="nota-stars">
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div class="nota-label">5 / 5</div>
+        </div>
+        <div class="nota-card">
+          <div class="nota-cat">Disciplina</div>
+          <div class="nota-stars">
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div class="nota-label">4 / 5</div>
+        </div>
+        <div class="nota-card">
+          <div class="nota-cat">Evolução</div>
+          <div class="nota-stars">
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-filled" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+            <svg class="star-empty" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>
+          </div>
+          <div class="nota-label">3 / 5</div>
+        </div>
+      </div>
+
+      <!-- Observação -->
+      <div class="obs-box">
+        <div class="obs-label">Observação do Sensei</div>
+        <div class="obs-text">Boa execução do O-soto-gari. Precisa melhorar o kuzushi no Seoi-nage — braço de kumi-kata ainda hesitante. Continuar Harai-goshi no randori.</div>
+      </div>
+
+      <!-- Técnica avaliada -->
+      <div class="section-title">Técnica desta Aula</div>
+      <div class="tecnica-list">
+        <div class="tecnica-item" style="border-color:rgba(26,158,91,0.4);">
+          <div class="tecnica-check done">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="tecnica-name">Harai-goshi — avaliado nesta aula</div>
+          <div class="tecnica-tag" style="background:rgba(26,158,91,0.1);color:var(--success);">Marcado</div>
+        </div>
+      </div>
+
+      <button class="salvar-btn">SALVAR AVALIAÇÃO</button>
+      <div style="height:20px;"></div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" aria-label="Navegação principal">
+      <button class="nav-item active" id="nav-home" onclick="showScreen('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Início</span>
+      </button>
+      <button class="nav-item" id="nav-presenca" onclick="showScreen('presenca')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+        <span>Presença</span>
+      </button>
+      <button class="nav-item" id="nav-progressao" onclick="showScreen('progressao')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Faixa</span>
+      </button>
+      <button class="nav-item" id="nav-campeonato" onclick="showScreen('campeonato')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <span>Torneios</span>
+      </button>
+      <button class="nav-item" id="nav-avaliacao" onclick="showScreen('avaliacao')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Avaliação</span>
+      </button>
+    </nav>
+  </div>
+
+  <div class="demo-note">
+    Protótipo navegável · 5 telas do MVP · Judo Casa — Instituto Casa Oficial
+  </div>
+</div>
+
+<script>
+const screens = ['home','presenca','progressao','campeonato','avaliacao'];
+const navMap = {home:'nav-home',presenca:'nav-presenca',progressao:'nav-progressao',campeonato:'nav-campeonato',avaliacao:'nav-avaliacao'};
+const navBtns = document.querySelectorAll('.screen-nav button');
+
+function showScreen(id) {
+  screens.forEach(s => {
+    const el = document.getElementById('screen-' + s);
+    if (el) el.hidden = (s !== id);
+    const nav = document.getElementById(navMap[s]);
+    if (nav) nav.classList.toggle('active', s === id);
+  });
+  navBtns.forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().toLowerCase() === labelOf(id));
+  });
+  document.querySelector('.phone').querySelector('.screen-body:not([hidden])')?.scrollTo(0,0);
+}
+
+function labelOf(id) {
+  const m = {home:'home',presenca:'presença',progressao:'faixa',campeonato:'campeonato',avaliacao:'avaliação'};
+  return m[id] || id;
+}
+
+// Update top nav buttons to match
+document.querySelectorAll('.screen-nav button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.screen-nav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+let enrolled = false;
+function toggleInscricao() {
+  enrolled = !enrolled;
+  const btn = document.getElementById('inscBtn');
+  if (enrolled) {
+    btn.textContent = '✓ INSCRITO';
+    btn.classList.add('enrolled');
+  } else {
+    btn.textContent = 'INSCREVER-ME';
+    btn.classList.remove('enrolled');
+  }
+}
+
+function confirmPresenca(btn) {
+  btn.classList.add('active');
+  const item = btn.closest('.presenca-item');
+  item.style.opacity = '1';
+  item.style.borderColor = 'rgba(26,158,91,0.3)';
+  item.querySelector('.presenca-belt').textContent = 'Faixa Amarela · Presença confirmada';
+}
+
+// Theme toggle
+let darkMode = false;
+function toggleTheme() {
+  darkMode = !darkMode;
+  document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
+  document.getElementById('themeLabel').textContent = darkMode ? 'Claro' : 'Escuro';
+  const icon = document.getElementById('themeIcon');
+  if (darkMode) {
+    icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+  } else {
+    icon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+
+// Mark nav buttons correctly based on onclick
+document.querySelectorAll('.screen-nav button').forEach(btn => {
+  const onclick = btn.getAttribute('onclick');
+  if (onclick && onclick.includes('home')) btn.classList.add('active');
+  else btn.classList.remove('active');
+});
+</script>
+
+</body></html>

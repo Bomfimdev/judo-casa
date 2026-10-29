@@ -6,26 +6,29 @@ App **web + iOS/Android** do projeto social de judô no **Instituto Casa Oficial
 
 ## Status
 
-Épico de produto **travado** · stack **travada** (2026-10-29). Próximo: scaffold Expo + Supabase.
+Épico + stack + **UI/UX** travados (2026-10-29). Scaffold Expo com home no estilo do protótipo.
 
-**Stack:** Expo (iOS/Android/web) + Supabase (Auth/Postgres/RLS) · marca CAP.
+**Stack:** Expo + Supabase · **UI:** [`docs/design/judo-casa-ui-prototype.html`](docs/design/judo-casa-ui-prototype.html)
+
+## Rodar (~1 min)
+
+```bash
+cd D:\projetos\judo-casa
+npm start
+```
+
+Depois: `w` (web) ou Expo Go no celular.
 
 ## Docs
 
 | Doc | Conteúdo |
 |-----|----------|
-| [docs/requisitos/epico-00-visao.md](docs/requisitos/epico-00-visao.md) | Visão, atores, MVP, fora de escopo |
-| [docs/requisitos/README.md](docs/requisitos/README.md) | Índice dos épicos / HUs |
-| [docs/requisitos/judo-casa-mvp-brief.json](docs/requisitos/judo-casa-mvp-brief.json) | Brief JSON p/ outra IA |
-| [docs/marca.md](docs/marca.md) | Identidade CAP (vermelho + cinza) |
-| [docs/arquitetura.md](docs/arquitetura.md) | Stack e caixas |
-| [docs/superpowers/plans/2026-10-29-judo-casa-fundacao.md](docs/superpowers/plans/2026-10-29-judo-casa-fundacao.md) | Plano implementação fundação/E1 |
+| [docs/ui.md](docs/ui.md) | Fonte da verdade UI/UX |
+| [docs/design/judo-casa-ui-prototype.html](docs/design/judo-casa-ui-prototype.html) | Protótipo interativo |
+| [docs/requisitos/epico-00-visao.md](docs/requisitos/epico-00-visao.md) | Visão / MVP |
+| [docs/arquitetura.md](docs/arquitetura.md) | Stack |
+| [docs/marca.md](docs/marca.md) | Marca CAP |
 
-## Marca (resumo)
+## Marca / tokens
 
-- Vermelho `#FF0D19` · Cinza `#56595B` · Apoio `#3C3C3D` · Fundo `#FFFFFF`
-- Logo referência: [`assets/logo-cap.png`](assets/logo-cap.png)
-
-## Licença
-
-Privado ao projeto social / uso do Instituto Casa — a definir no primeiro release.
+Vermelho `#FF0D19` · fundos `#F7F7F5` / cards brancos · tipografia Bebas Neue + DM Sans (protótipo).

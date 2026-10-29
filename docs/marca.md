@@ -31,3 +31,7 @@ Arquivo: [`../assets/logo-cap.png`](../assets/logo-cap.png)
 ## Tom
 
 Projeto social cristão + judô: acolhedor, claro, sem visual “gym SaaS” genérico. Mobile-first.
+
+## UI/UX
+
+Fonte da verdade: [ui.md](./ui.md) + protótipo [design/judo-casa-ui-prototype.html](./design/judo-casa-ui-prototype.html) (entregue 2026-10-29).
