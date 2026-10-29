@@ -1,0 +1,13 @@
+# Config mínima — projeto remoto judo-casa
+# project_id preenchido após link
+
+[api]
+enabled = true
+
+[db]
+port = 54322
+
+[auth]
+enabled = true
+site_url = "http://localhost:8081"
+additional_redirect_urls = ["exp://127.0.0.1:8081"]

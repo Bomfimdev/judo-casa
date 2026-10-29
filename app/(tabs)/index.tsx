@@ -1,25 +1,43 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Link } from 'expo-router';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { useAuth } from '@/src/features/auth/AuthContext';
 import { colors } from '@/src/theme/colors';
 
 export default function HomeScreen() {
+  const { profile, configured, signOut } = useAuth();
+  const firstName = (profile?.nome || 'Judoca').split(' ')[0];
+  const initials = (profile?.nome || 'JC')
+    .split(' ')
+    .map((p) => p[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+
   return (
     <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
       <View style={styles.header}>
         <Text style={styles.brand}>
           Judo<Text style={styles.brandAccent}>Casa</Text>
         </Text>
-        <View style={styles.avatar}>
-          <Text style={styles.avatarText}>GB</Text>
-        </View>
+        <Pressable onPress={() => signOut()} style={styles.avatar}>
+          <Text style={styles.avatarText}>{initials}</Text>
+        </Pressable>
       </View>
 
       <View style={styles.greeting}>
-        <Text style={styles.greetingSub}>Protótipo · UI travada</Text>
+        <Text style={styles.greetingSub}>
+          {configured ? profile?.papel ?? 'sem perfil' : 'modo local · configure Supabase'}
+        </Text>
         <Text style={styles.greetingName}>
-          Olá, <Text style={styles.greetingAccent}>Gabriel!</Text>
+          Olá, <Text style={styles.greetingAccent}>{firstName}!</Text>
         </Text>
       </View>
+      {!configured ? (
+        <Link href="/(auth)/login" style={styles.authHint}>
+          Abrir login (após .env)
+        </Link>
+      ) : null}
 
       <View style={[styles.card, styles.beltCard]}>
         <View style={styles.beltTop}>
@@ -179,4 +197,10 @@ const styles = StyleSheet.create({
   commTitle: { fontSize: 15, fontWeight: '600', color: colors.fg },
   commBody: { fontSize: 13, color: colors.fg2, marginTop: 6, lineHeight: 18 },
   logo: { width: 120, height: 60, alignSelf: 'center', marginTop: 28, opacity: 0.85 },
+  authHint: {
+    marginHorizontal: 20,
+    marginBottom: 8,
+    color: colors.red,
+    fontWeight: '600',
+  },
 });
