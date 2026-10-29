@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "produto": "Judo Casa",
+    "status": "epico_travado",
+    "data_travamento": "2026-10-29",
+    "idioma": "pt-BR",
+    "repositorio": "https://github.com/Bomfimdev/judo-casa",
+    "pasta_local": "D:\\projetos\\judo-casa",
+    "plataformas": ["web", "ios", "android"],
+    "ui_prioridade": "mobile-first"
+  },
+  "conceito": {
+    "resumo": "App do projeto social de judô sediado no Instituto Casa Oficial / Casa de Adoração Profética (Samambaia, Brasília). Opera o dojo: turmas, presença, comunicados, avaliação, progressão de faixa e inscrição em campeonatos — sem mensalidade.",
+    "problema": "O dojo social precisa de operação digital leve: quem treina, quando tem aula, se o aluno veio, avisos aos responsáveis, evidência até o exame de faixa e inscrição em campeonato — sem fricção de cobrança recorrente.",
+    "solucao": "Web + iOS/Android com perfis Admin, Sensei, Aluno e Responsável. Sensei opera aula/presença/avaliação no celular; famílias acompanham; Admin coordena turmas, currículo, comunicados e campeonatos.",
+    "sucesso_mvp": [
+      "Sensei registra aula e presença no celular",
+      "Responsável vê comunicado e próxima aula",
+      "Aluno se inscreve em campeonato (sem pagar)",
+      "Sensei/Admin vê lista de inscritos",
+      "Progressão de faixa rastreável até o exame (decisão humana)"
+    ],
+    "tom_produto": "Projeto social cristão + judô: acolhedor, claro, moderno; não gym SaaS genérico"
+  },
+  "contexto_organizacional": {
+    "nome_app": "Judo Casa",
+    "instituicao": "Instituto Casa Oficial",
+    "vinculo_fisico": "Casa de Adoração Profética (CAP) — sede Samambaia",
+    "endereco": "Quadra 101 Conjunto 4 lotes 8 e 9, Samambaia, Brasília/DF",
+    "cnpj_instituto_casa": "44.592.290/0001-85",
+    "site_cap": "https://casadeadoracaoprofetica.org.br/",
+    "tipo_projeto": "social",
+    "mensalidade": false
+  },
+  "relacao_ichthus": {
+    "mesmo_codigo": false,
+    "mesmo_repositorio": false,
+    "ichthus_repo": "https://github.com/Bomfimdev/ICHTHUS-JUDO",
+    "uso_do_ichthus": "Apenas referência do assunto (aluno, turma, faixa, exame, presença). Produtos e deploys separados. Não fork/merge."
+  },
+  "marca": {
+    "logo_descricao": "Casa: teto vermelho, fundação cinza, janela com cruz; wordmark CAP",
+    "logo_arquivo": "assets/logo-cap.png",
+    "paleta": {
+      "primaria_vermelho": "#FF0D19",
+      "neutro_cinza": "#56595B",
+      "neutro_escuro": "#3C3C3D",
+      "fundo": "#FFFFFF",
+      "texto_sobre_primaria": "#FFFFFF"
+    },
+    "nao_usar": ["paleta dourado/preto do ICHTHUS", "tema roxo genérico de SaaS"]
+  },
+  "atores": [
+    {
+      "id": "admin",
+      "nome": "Admin/Coordenação",
+      "pode": [
+        "usuarios_e_perfis",
+        "turmas_e_agenda",
+        "curriculo_faixas_tecnicas",
+        "comunicados",
+        "campeonatos_crud",
+        "lista_inscritos"
+      ]
+    },
+    {
+      "id": "sensei",
+      "nome": "Sensei",
+      "pode": [
+        "abrir_aula",
+        "confirmar_presenca",
+        "avaliar_tecnicas",
+        "progressao_exame",
+        "ver_inscritos_campeonato"
+      ]
+    },
+    {
+      "id": "aluno",
+      "nome": "Aluno",
+      "pode": [
+        "home",
+        "agenda",
+        "checkin",
+        "ver_progressao_e_avaliacoes",
+        "comunicados",
+        "inscrever_campeonato"
+      ]
+    },
+    {
+      "id": "responsavel",
+      "nome": "Responsável",
+      "pode": [
+        "acesso_equivalente_aos_filhos_vinculados"
+      ],
+      "restricao": "Só vê dados dos filhos vinculados"
+    }
+  ],
+  "mvp_dentro": [
+    {
+      "ordem": 1,
+      "epico": "E1",
+      "titulo": "Usuários e perfis",
+      "inclui": ["login", "cadastro", "vinculo_aluno_responsavel", "ativar_inativar"]
+    },
+    {
+      "ordem": 2,
+      "epico": "E2",
+      "titulo": "Estrutura curricular",
+      "inclui": ["faixas", "tecnicas", "requisitos_por_faixa", "exames_separados_por_faixa"]
+    },
+    {
+      "ordem": 3,
+      "epico": "E3",
+      "titulo": "Turmas e agenda",
+      "inclui": ["turmas", "horarios_recorrentes", "excecoes", "agenda_aluno_responsavel"]
+    },
+    {
+      "ordem": 4,
+      "epico": "E4",
+      "titulo": "Aula e presença",
+      "inclui": ["abrir_aula", "checkin_app_ou_qr", "confirmacao_sensei", "historico"],
+      "regra": "check-in != presença confirmada"
+    },
+    {
+      "ordem": 5,
+      "epico": "E5",
+      "titulo": "Avaliação",
+      "inclui": ["resumo_aula", "avaliacao_individual_por_tecnica", "leitura_aluno_responsavel"]
+    },
+    {
+      "ordem": 6,
+      "epico": "E6",
+      "titulo": "Progressão e graduação",
+      "inclui": ["checklist", "elegiveis_exame", "registrar_banca", "historico_faixas"],
+      "regra": "promoção nunca automática — Sensei/banca decide"
+    },
+    {
+      "ordem": 7,
+      "epico": "E7",
+      "titulo": "Dashboard e comunicados",
+      "inclui": ["home", "barra_progresso_faixa", "comunicados_turma_ou_geral"]
+    },
+    {
+      "ordem": 8,
+      "epico": "E8",
+      "titulo": "Campeonato / torneio",
+      "inclui": ["crud_campeonato", "inscricao_aluno", "status_inscrito", "lista_inscritos"],
+      "pagamento": false,
+      "fluxo": "Admin cria → agenda → Aluno inscreve → INSCRITO → Sensei/Admin vê lista"
+    }
+  ],
+  "mvp_fora": [
+    "mensalidade",
+    "qualquer_financeiro",
+    "pagamento_inscricao_campeonato",
+    "diario_pessoal_treino_alimentacao",
+    "codigo_compartilhado_com_ichthus",
+    "multi_academia_saas",
+    "geolocalizacao",
+    "push_nativo_obrigatorio"
+  ],
+  "regras_negocio": [
+    { "id": "RN-01", "texto": "Usuário inativo não autentica" },
+    { "id": "RN-02", "texto": "Idioma v1: português (Brasil)" },
+    { "id": "RN-03", "texto": "Check-in ≠ presença confirmada (Sensei confirma)" },
+    { "id": "RN-04", "texto": "Promoção de faixa nunca é automática" },
+    { "id": "RN-05", "texto": "Responsável só vê dados dos filhos vinculados" },
+    { "id": "RN-06", "texto": "Sem cobrança no MVP (mensalidade e taxa de campeonato)" },
+    { "id": "RN-07", "texto": "Produto independente do ICHTHUS" }
+  ],
+  "design_refs_ui": {
+    "skills_kit": [
+      "design-taste-frontend",
+      "imagegen-frontend-mobile"
+    ],
+    "oss_moodboard_mobile": [
+      "https://github.com/tanne2376/skm-app",
+      "https://github.com/NancyZhang26/Martial-Arts-SaaS",
+      "https://github.com/JudoClubSeclin/judoseclin"
+    ],
+    "nota": "Refs só para UI/UX; não fork AGPL como base"
+  },
+  "docs": {
+    "visao": "docs/requisitos/epico-00-visao.md",
+    "indice_epicos": "docs/requisitos/README.md",
+    "marca": "docs/marca.md",
+    "epicos": [
+      "docs/requisitos/epico-01-usuarios-perfis.md",
+      "docs/requisitos/epico-02-estrutura-curricular.md",
+      "docs/requisitos/epico-03-turmas-agenda.md",
+      "docs/requisitos/epico-04-aula-presenca.md",
+      "docs/requisitos/epico-05-avaliacao.md",
+      "docs/requisitos/epico-06-graduacao.md",
+      "docs/requisitos/epico-07-dashboard-comunicados.md",
+      "docs/requisitos/epico-08-campeonato.md"
+    ]
+  },
+  "stack": {
+    "status": "ainda_nao_definida",
+    "direcao_sugerida": "mobile-first (ex. Expo) + API; decidir no plano técnico"
+  }
+}
